@@ -1,0 +1,20 @@
+{% extends "dealership_site/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!--<link rel="stylesheet" type="text/css" href="../static/dealership_site/calc.css">-->
+<div class="container bg-light">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4"> Calculate Costs </legend>
+<!--                {% for calc in latest %}-->
+<!--                    {{ calc.cost_calc }}-->
+<!--                {% endfor %}-->
+                        {{ calc.cost_calc }}
+<!--                <a>Total price: {{ calc.cost_calc }}</a>-->
+            </fieldset>
+        </form>
+    </div>
+{{ form.media }}
+
+{% endblock content %}
