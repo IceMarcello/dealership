@@ -1,7 +1,9 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.template import loader
 from .models import Post, Calc
 
 
@@ -86,15 +88,32 @@ def about(request):
     return render(request, 'dealership_site/about.html', {'title': 'About'})
 
 
-class CalculationView(LoginRequiredMixin, ListView):
-    model = Calc
-    template_name = 'dealership_site/calculation.html'
+def calculate_costs():
+    latest = Calc.objects.last()
+    bp = float(latest.buy_price)
+    vt = float(latest.vat)
+    exh = float(latest.exchange)
+    tc = float(latest.transport_cost)
 
-    # latest = Calc.objects.all().order_by('-id')[:1]
-    # bp = float(latest.buy_price)
-    # vt = float(latest.vat)
-    # exh = float(latest.exchange)
-    # tc = float(latest.transport_cost)
-    #
-    # cst = bp*vt*exh+tc
+    cst = bp * vt * exh + tc
+    context = {
+        'cst': cst
+    }
+    return context
+
+
+# class CalculationView(LoginRequiredMixin, ListView):
+#     extra_context = calculate_costs()
+#     model = Calc
+#     template_name = 'dealership_site/calculation.html'
+
+
+def calculation(request):
+    template = loader.get_template('dealership_site/calculation.html')
+    calc_costs = calculate_costs()
+    return HttpResponse(template.render(calc_costs, request))
+
+
+
+
 
