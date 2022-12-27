@@ -16,6 +16,7 @@ CURRENCY_CHOICES = (
 
 
 class CalcForm(forms.Form):
+    title = forms.CharField(max_length=200)
     buy_price = forms.FloatField()
     exchange = forms.FloatField(choices=CURRENCY_CHOICES, default="PLN")
     transport_costs = forms.FloatField()
@@ -24,4 +25,4 @@ class CalcForm(forms.Form):
     class Meta:
 
         model = Calc
-        fields = ['buy_price', 'exchange', 'transport_cost', 'vat']
+        fields = ['title', 'buy_price', 'exchange', 'transport_cost', 'vat']

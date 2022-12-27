@@ -11,12 +11,17 @@ from .models import Post, Calc
 
 def home(request):
     context = {
-        'posts': Post.objects.all()
+        'posts': Post.objects.all(),
     }
     return render(request, 'dealership_site/home.html', context)
 
+def calcs(request):
+    context = {
+        'calcs': Calc.objects.all()
+    }
+    return render(request, "dealership_site/all_calculations", context)
 
-class PostListView(LoginRequiredMixin, ListView):
+class PostListView(ListView):
     model = Post
     template_name = 'dealership_site/home.html'
     context_object_name = 'posts'
@@ -80,7 +85,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class CalculatorView(LoginRequiredMixin, CreateView):
     model = Calc
     template_name = 'dealership_site/calculator.html'
-    fields = ['buy_price', 'exchange', 'transport_cost', 'vat']
+    fields = ['title', 'buy_price', 'exchange', 'transport_cost', 'vat']
     success_url = '/calculation/'
 
 
@@ -114,6 +119,11 @@ def calculation(request):
     return HttpResponse(template.render(calc_costs, request))
 
 
-
+class CalcListView(LoginRequiredMixin, ListView):
+    model = Calc
+    template_name = 'dealership_site/all_calculations.html'
+    context_object_name = 'calcs'
+    ordering = ['-date_posted']
+    paginate_by = 9
 
 

@@ -15,12 +15,14 @@
 
 
             <div class="col-md-4 ">
-              <div class="card mb-4 box-shadow">
+              <div class="card mb-4 box-shadow" style="height: 730px">
                  <a role="button" class="btn btn-primary" href="{% url 'user-posts' post.author.username %}">Check more vehicles from {{ post.author }}
                  </a>
                 <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
                 {% if post.image %}
-                <img class="card-img-top" src="{{ post.image.url }}" alt="Card image cap">
+                <img class="card-img-top" src="{{ post.image.url }}" height="255px">
+                {% else %}
+                <img class="card-img-top" src="../media/images/cbr.jpg" alt="Card image cap" >
                 {% endif %}
                 <div class="card-body">
                   <ul class="list-group">
@@ -45,6 +47,7 @@
               </div>
             </div>
 {% endfor %}
+<div>
 {% if is_paginated %}
   {% if page_obj.has_previous %}
     <a class="btn btn-outline-info mb-4 bg-light" href="?page=1">First</a>
@@ -64,4 +67,5 @@
     <a class="btn btn-outline-info mb-4 bg-light" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
   {% endif %}
 {% endif %}
+</div>
 {% endblock content %}

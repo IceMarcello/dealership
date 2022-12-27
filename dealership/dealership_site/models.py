@@ -49,13 +49,15 @@ class Post(models.Model):
 
 
 class Calc(models.Model):
+    title = models.CharField(max_length=200)
     buy_price = models.FloatField()
     exchange = models.FloatField(choices=CURRENCY_CHOICES, default=1)
     transport_cost = models.FloatField()
     vat = models.FloatField()
+    date_posted = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.buy_price
+        return self.title
 
     @property
     def calc_costs(self):
