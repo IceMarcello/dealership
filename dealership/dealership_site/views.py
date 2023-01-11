@@ -100,10 +100,13 @@ def calculate_costs():
     exh = float(latest.exchange)
     tc = float(latest.transport_cost)
 
-    cst = round(bp * vt * exh + tc, 2)
+    cst = round(bp * vt * exh/100 + tc, 2)
     context = {
         'cst': cst
     }
+    calculate = Calc.objects.get(title=latest.title)
+    calculate.overall_price = cst
+    calculate.save()
     return context
 
 

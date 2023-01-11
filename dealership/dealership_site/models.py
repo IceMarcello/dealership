@@ -58,11 +58,7 @@ class Calc(models.Model):
     transport_cost = models.FloatField()
     vat = models.FloatField()
     date_posted = models.DateTimeField(default=timezone.now)
+    overall_price = models.FloatField(default=1)
 
     def __str__(self):
         return self.title
-
-    # @property
-    # def calc_costs(self):
-    #     return float(self.buy_price * self.exchange + self.transport_cost + self.buy_price * self.exchange * self.vat)
-
