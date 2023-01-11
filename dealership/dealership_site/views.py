@@ -7,19 +7,19 @@ from django.template import loader
 from .models import Post, Calc
 
 
-
-
 def home(request):
     context = {
         'posts': Post.objects.all(),
     }
     return render(request, 'dealership_site/home.html', context)
 
+
 def calcs(request):
     context = {
         'calcs': Calc.objects.all()
     }
     return render(request, "dealership_site/all_calculations", context)
+
 
 class PostListView(ListView):
     model = Post
@@ -100,7 +100,7 @@ def calculate_costs():
     exh = float(latest.exchange)
     tc = float(latest.transport_cost)
 
-    cst = bp * vt * exh + tc
+    cst = round(bp * vt * exh + tc, 2)
     context = {
         'cst': cst
     }

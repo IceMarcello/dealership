@@ -7,6 +7,9 @@ from forex_python.converter import CurrencyRates
 STATUS_CHOICES = (
     ("AVAILABLE", "AVAILABLE"),
     ("SOLD", "SOLD"),
+    ("UNAVAILABLE", "UNAVAILABLE"),
+    ("IN PROGRESS", "IN PROGRESS"),
+    ("OTHER", "OTHER"),
 )
 FUEL_CHOICES = (
     ("Diesel", "Diesel"),
@@ -39,7 +42,7 @@ class Post(models.Model):
     fuel = models.CharField(max_length=10, choices=FUEL_CHOICES, default="Other")
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="AVAILABLE")
+    status = models.CharField(max_length=12, choices=STATUS_CHOICES, default="AVAILABLE")
 
     def __str__(self):
         return self.title
@@ -59,7 +62,7 @@ class Calc(models.Model):
     def __str__(self):
         return self.title
 
-    @property
-    def calc_costs(self):
-        return float(self.buy_price * self.exchange + self.transport_cost + self.buy_price * self.exchange * self.vat)
+    # @property
+    # def calc_costs(self):
+    #     return float(self.buy_price * self.exchange + self.transport_cost + self.buy_price * self.exchange * self.vat)
 
