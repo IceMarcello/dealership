@@ -32,7 +32,6 @@ CURRENCY_CHOICES = (
 
 class Post(models.Model):
     title = models.CharField(max_length=22)
-    image = models.ImageField(null=True, blank=True, upload_to="images/")
     content = models.TextField()
     price = models.IntegerField()
     odo = models.BigIntegerField()
@@ -43,12 +42,18 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=12, choices=STATUS_CHOICES, default="AVAILABLE")
+    mainimage = models.ImageField(null=True, blank=True, upload_to="images/")
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
+
+
+class Image(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
 
 
 class Calc(models.Model):

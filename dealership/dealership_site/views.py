@@ -1,16 +1,21 @@
-from django.http import HttpRequest, HttpResponse
+from django.contrib import messages
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.template import loader
-from .models import Post, Calc
+from .models import Post, Calc, Image
+from .forms import ImageForm, PostCreateForm
 
 
 def home(request):
     context = {
         'posts': Post.objects.all(),
+        'images': Image.objects.all(),
     }
+
     return render(request, 'dealership_site/home.html', context)
 
 
@@ -44,14 +49,32 @@ class PostDetailView(DetailView):
     model = Post
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = ['title', 'content', 'price', 'odo', 'capacity', 'power', 'year', 'image', 'status']
-    success_url = '/'
+# class PostCreateView(LoginRequiredMixin, CreateView):
+#     model = Post
+#     fields = ['title', 'content', 'price', 'odo', 'capacity', 'power', 'year', 'image', 'status']
+#     success_url = '/'
+#
+#     def form_valid(self, form):
+#         form.instance.author = self.request.user
+#         return super().form_valid(form)
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+
+def create_post(request):
+    if request.method == "POST":
+        form = PostCreateForm(request.POST, request.FILES)
+        files = request.FILES.getlist("image")
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.author = request.user
+            f.save()
+            for i in files:
+                Image.objects.create(post=f, image=i)
+            messages.success(request, "Offer created successfully")
+            return HttpResponseRedirect("/")
+    else:
+        form = PostCreateForm()
+        imageform = ImageForm
+    return render(request, "dealership_site/post_form.html", {"form": form, "imageform": imageform})
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

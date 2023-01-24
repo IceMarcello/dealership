@@ -22,9 +22,12 @@
 
     </div>
     <h2 class="article-title">{{ object.title }}</h2>
-    {% if post.image %}
-      <img class="card-img-top" src="{{ post.image.url }}" alt="Card image cap">
-    {% endif %}
+<!--    {% if post.image %}-->
+<!--      <img class="card-img-top" src="{{ post.image.url }}" alt="Card image cap">-->
+<!--    {% endif %}-->
+      {% for image in post.image_set.all %}
+      <img class="card-img-top" src="{{ image.image.url }}" width="auto" alt="Picture">
+      {%endfor%}
     <ul class="list-group" style="margin-bottom: 4px">
                     <li class="list-group-item">Price: {{ post.price }}zł</li>
                     <li class="list-group-item">Year: {{ post.year }}</li>

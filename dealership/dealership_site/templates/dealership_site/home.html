@@ -8,11 +8,18 @@
       {{ post.author }}
     </a>
     <h4><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h4>
-    {% if post.image %}
-    <img class="card-img-top" src="{{ post.image.url }}" height="240px" width="auto" alt="Picture">
+
+    {% if post.mainimage %}
+    <img class="card-img-top" src="{{ post.mainimage.url }}" height="240px" width="auto" alt="Picture">
     {% else %}
     <img class="card-img-top" src="../media/images/cbr.jpg" alt="Card image cap">
     {% endif %}
+
+<!--    {% for image in post.image_set.all %}-->
+<!--    {% if post.image_set.all %}-->
+<!--    <img class="card-img-top" src="{{ image.image.url }}" height="240px" width="auto" alt="Picture">-->
+<!--    {%endif%}-->
+<!--    {% endfor %}-->
     <div class="card-body">
       <ul class="list-group">
         <li class="list-group-item"><img src="../media/icons/tag.svg" alt="Price" width="25" height="25"> : {{ post.price }}zł</li>
